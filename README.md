@@ -1,12 +1,12 @@
-#从CIFAR数据集制作开始教你训练自己的分类模型
-> 目录
->* 参考CIFAR的格式制作自己的数据集
->* 使用自己制作的数据集训练模型
-##参考CIFAR的格式制作自己的数据集
-###### 代码已经公开在本人的Github，下面是代码使用的详细教程
-* 首先将所有图片按类别放在文件夹中，文件夹名为类别名。例如：存在20个类就分20个文件夹
-* 将所有图片的路径提取到一个文件中，文件中每行包含图片路径和图片所属类别的索引（同时会生成图片类别和索引的对应关系）
-    * 运行 get_filename.py 文件，生成图片路径+类别索引（data/cow_jpg.lst）和类别索引对应表（data/object_list.txt）
+# Start teaching you to train your own classification model from the production of CIFAR dataset
+> Catalogue
+>* Make your own dataset with reference to CIFAR format
+>* Use your own dataset to train the model
+## Reference CIFAR format to create their own datasets
+###### Detailed tutorial code has been disclosed in my Github, Here is the code used
+* First of all the pictures on the files by category folder, the folder name is the category name. For example: if there are 20 categories, there are 20 folders
+* Extract the path of all pictures into a file, each line in the file contains the path of the picture and the index of the category to which the picture belongs (the corresponding relationship between the picture category and the index will be generated at the same time)
+    * Run get_filename.py file, generating the image path + category index (data / cow_jpg.lst) and the category index correspondence table (data / object_list.txt)
         ```python
         import os
         def getFlist(path):
@@ -34,9 +34,9 @@
             getChildList(root_dirs)
             print(root_dirs)
          ```
-    * 类别索引对应表就是将文件名所表示的类别与索引相对应，因为训练模型时不能以字符串作为类别名。例如：狗 0，猫 1，鸡 3……
-* 拆分训练集与测试集（这里我先将所有数据打乱，取一部分作为训练集，剩下的则作为测试集）
-    * 打开 make_test_batch.py 文件
+    * The category index correspondence table corresponds to the category represented by the file name and the index, because the string cannot be used as the category name when training the model. For example: dog 0, cat 1, chicken 3...
+* Split the training set and the test set (here I will shuffle all the data first, take a part as the training set, and the rest as the test set)
+    * Open make_test_batch.py 
         ```python
         import os
         import random
@@ -64,26 +64,26 @@
         f2.close()
         f3.close()
         ```
-    * 将上一步生成的图片路径+类别索引（data/cow_jpg.lst）文件填到第3行
-    * 设置拆分阈值，我设定了0.2为拆分阈值，其含义为前20%为测试集，剩下的是训练集
-    * 运行！
-    * 生成 <kbd>test_batch</kbd> (文件名：data/cow_jpg_test.lst)
-    和 <kbd>train_batch</kbd> (文件名：data/cow_jpg_train.lst)
-* 制作CIFAR的batch
-    * 运行 demo.py 文件，其中将file_list参数填写上一步生成的图片路径文件（data/cow_jpg_train.lst）
-    * 填写拆分出的tran文件（cow_jpg_train.lst），bin_num 设置为4，就会生成四个batch_train文件
-    * 填写拆分出的tran文件（cow_jpg_test.lst），bin_num 设置为1，就会生成一个batch_test文件
-    * 共生成五个文件，与管方提供的CIFAR压缩包相同
-* 制作CIFAR的.mate文件
-    * 在batch文件夹中新建一个batches.meta文件
-    * 打开 edit_mate.py 文件
-    * 填写每个batch包含的样本数量(num_cases_per_batch) ，这里我设置了2500因为我一共有10000个样本，分了四个batch
-    * 将类别索引表文件（object_list.txt）中的类别名（文件名不是索引）按顺序替换到第十行，应该是类别名，也就是文件名，例如：猫，狗，鸡，我这里是数字字符串
-    * 运行！
-    * 生成 batches.meta 文件
-####这样你就会得到：data_batch_0,...,test_batch,batches.meta等三类文件，与官方的CIFAR数据集完全一致，下面我们以任何一个使用CIFAR数据集的模型为例，进行测试
-##使用自己制作的数据集训练模型
-* 打开data_utils.py,找到下面这段代码，将下载设置为否（download=False），找不到就算了，跳过这步
+    * Fill in the image path + category index (data/cow_jpg.lst) file generated in the previous step to line 3
+    * Set the split threshold, I set 0.2 as the split threshold, which means that the first 20% is the test set, and the rest is the training set
+    * Run!
+    * Generate <kbd>test_batch</kbd> (file name: data/cow_jpg_test.lst)
+    And <kbd>train_batch</kbd> (file name: data/cow_jpg_train.lst)
+* Make CIFAR batch
+    * Run the demo.py file, fill in the file_list parameter in the image path file generated in the previous step (data/cow_jpg_train.lst)
+    * Fill in the split tran file (cow_jpg_train.lst), set bin_num to 4, four batch_train files will be generated
+    * Fill in the split tran file (cow_jpg_test.lst), set bin_num to 1, and a batch_test file will be generated
+    * A total of five files are generated, which are the same as the CIFAR compressed package provided by the management
+* Make CIFAR .mate file
+    * Create a batches.meta file in the batch folder
+    * Open the edit_mate.py file
+    * Fill in the number of samples contained in each batch (num_cases_per_batch), here I set 2500 because I have a total of 10,000 samples, divided into four batches
+    * Replace the category name (the file name is not an index) in the category index table file (object_list.txt) to the tenth line in order, which should be the category name, which is the file name, for example: cat, dog, chicken, here it is Numeric string
+    * Run!
+    * Generate batches.meta file
+#### This way you will get: data_batch_0,...,test_batch, batches.meta and other three types of files, which are exactly the same as the official CIFAR dataset. Below we take any model that uses the CIFAR dataset as an example. test
+## Training the model with the dataset made by yourself
+* Open data_utils.py, find the following piece of code, set the download to No (download=False), even if you can’t find it, skip this step
    ```python
   if args.dataset == "cifar10":
         trainset = datasets.CIFAR10(root="./data",
@@ -96,7 +96,7 @@
                                    download=False,
                                    transform=transform_test) if args.local_rank in [-1, 0] else None
     ```
-* 跑一下模型 train.py ,报错 
+* Run the model train.py and report an error
     * ```
       Traceback (most recent call last):
           File "/workspace/ViT-pytorch-main/train.py", line 347, in <module>
@@ -113,11 +113,11 @@
             ' You can use download=True to download it'
             RuntimeError: Dataset metadata file not found or corrupted. You can use download=True to download it
         ``` 
-    * 原因是模型没有找到CIFAR文件，因为CIFAR函数中自带完整性验证(check_integrity)，关闭即可。
-* 关闭CIFAR源码中的文件完整性验证
-    * 根据报错信息找到CIFAR源码的位置
-    * 我这里是```/opt/conda/envs/ViT/lib/python3.6/site-packages/torchvision/datasets/cifar.py```
-    * 打开源码，注释掉如下几行
+    * The reason is that the model does not find the CIFAR file, because the CIFAR function comes with integrity verification (check_integrity), just close it.
+* Turn off file integrity verification in CIFAR source code
+    * Find the location of the CIFAR source code according to the error message
+    * I am ```/opt/conda/envs/ViT/lib/python3.6/site-packages/torchvision/datasets/cifar.py```
+    * Open the source code and comment out the following lines
       ```
         if not check_integrity(path, self.meta['md5']):
             raise RuntimeError('Dataset metadata file not found or corrupted.' +
@@ -132,8 +132,8 @@
         if not check_integrity(fpath, md5):
            return False
         ```
-    * 找到代码中的num_classes = 10，将10修改为你的类别数量  
-    * pycharm中可以 crtl + shift + F 搜索 num_classes
-    * 运行成功！
+    * Find num_classes = 10 in the code, modify 10 to the number of your categories
+    * In pycharm, crtl + shift + F can be searched for num_classes
+    * Successfully run!
     
-    #cifar10Dataset-master
+    #cifar10Dataset-master This is my blog address https://blog.csdn.net/p609354432/article/details/118312563
