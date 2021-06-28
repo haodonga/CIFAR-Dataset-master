@@ -1,0 +1,13 @@
+data/4 0
+data/36 1
+data/32 2
+data/10 3
+data/1 4
+data/38 5
+data/40 6
+data/21 7
+data/6 8
+data/2 9
+data/3 10
+data/13 11
+data/7 12
