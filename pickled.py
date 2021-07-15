@@ -4,7 +4,8 @@
 
 
 import os
-import pickle, cPickle
+import pickle
+import _pickle as cPickle
 
 BIN_COUNTS = 5
 
@@ -19,7 +20,7 @@ def pickled(savepath, data, label, fnames, bin_num=BIN_COUNTS, mode="train"):
   '''
   assert os.path.isdir(savepath)
   total_num = len(fnames)
-  samples_per_bin = total_num / bin_num
+  samples_per_bin = int(total_num / bin_num)
   assert samples_per_bin > 0
   idx = 0
   for i in range(bin_num): 

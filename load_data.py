@@ -9,10 +9,11 @@ import numpy as np
 
 DATA_LEN = 3072
 CHANNEL_LEN = 1024
-SHAPE = 32
+SHAPE = 32 #圖像大小
 
 def imread(im_path, shape=None, color="RGB", mode=cv2.IMREAD_UNCHANGED):
   im = cv2.imread(im_path, cv2.IMREAD_UNCHANGED)
+  print(im)
   if color == "RGB":
     im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
     # im = np.transpose(im, [2, 1, 0])
@@ -44,12 +45,14 @@ def read_data(filename, data_path, shape=None, color='RGB'):
     s, c = SHAPE, CHANNEL_LEN
     for ln in lines:
       fname, lab = ln.split(' ')
+      print(fname)
       im = imread(os.path.join(data_path, fname), shape=s, color='RGB')
       '''
       im = cv2.imread(os.path.join(data_path, fname), cv2.IMREAD_UNCHANGED)
       im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
       im = cv2.resize(im, (s, s))
       '''
+
       data[idx,:c] =  np.reshape(im[:,:,0], c)
       data[idx, c:2*c] = np.reshape(im[:,:,1], c)
       data[idx, 2*c:] = np.reshape(im[:,:,2], c)
